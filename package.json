@@ -1,0 +1,31 @@
+{
+  "name": "blog-source-code",
+  "version": "1.0.0",
+  "description": "博客源码",
+  "main": "index.js",
+  "scripts": {
+    "testT": "mocha src/test/**/test.ts",
+    "testJ": "mocha src/test/**/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/echoheart/blog-source-code.git"
+  },
+  "author": "limantang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/echoheart/blog-source-code/issues"
+  },
+  "homepage": "https://github.com/echoheart/blog-source-code#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "sinon": "^7.4.1",
+    "sinon-chai": "^3.3.0",
+    "@types/chai": "^4.2.0",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.7.3",
+    "@types/sinon": "^7.0.13",
+    "@types/sinon-chai": "^3.2.3"
+  }
+}
