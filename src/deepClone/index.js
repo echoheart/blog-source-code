@@ -1,19 +1,37 @@
+let cached = [];
 function deepClone(source) {
     if (source instanceof Object) {
-        let dist = new Object();
-        if (source instanceof Array) {
-            dist = new Array();
-        } else if (source instanceof Function) {
-            dist = function () {
-                return source.call(this, ...arguments)
+        let cachedDist = findCache(source)
+        if (cachedDist) {
+            return cachedDist;
+        } else {
+            let dist = null;
+            if (source instanceof Array) {
+                dist = new Array();
+            } else if (source instanceof Function) {
+                dist = function () {
+                    return source.call(this, ...arguments)
+                }
+            } else {
+                dist = new Object()
             }
+            cached.push([source, dist]);
+            for (let key in source) {
+                dist[key] = deepClone(source[key]);
+            }
+            return dist;
         }
-        for (let key in source) {
-            dist[key] = deepClone(source[key]);
-        }
-        return dist;
     }
     return source;
+}
+
+function findCache(source) {
+    for (let i = 0; i < cached.length; i++) {
+        if (source === cached[i][0]) {
+            return cached[i][1];
+        }
+    }
+    return undefined;
 }
 
 module.exports = deepClone;

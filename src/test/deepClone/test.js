@@ -55,6 +55,27 @@ describe('deepClone', () => {
             assert(a.xxx.yyy !== a2.xxx.yyy);
             assert(a.xxx !== a2.xxx);
             assert(a(1, 2) === a2(1, 2));
-          });
+        });
+        it("环也能复制", () => {
+            const a = { name: "方方" };
+            a.self = a;
+            const a2 = deepClone(a);
+            assert(a !== a2);
+            assert(a.name === a2.name);
+            assert(a.self !== a2.self);
+        });
+        xit("不会爆栈", () => {
+                    const a = { child: null };
+                    let b = a;
+                    for (let i = 0; i <5000; i++) {
+                        b.child = {
+                            child: null
+                        };
+                        b = b.child;
+                    }
+            const a2 = deepClone(a);
+            assert(a !== a2);
+            assert(a.child !== a2.child);
+        });
     })
 })
