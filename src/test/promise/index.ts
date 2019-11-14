@@ -171,7 +171,7 @@ describe('Promise', () => {
     })
   })
 
-  it('2.2.6 then可以在同一个promise里被多次调用resolve', (done) => {
+  it('2.2.6 then可以在同一个promise里被多次调用===>(resolve)', (done) => {
     const callbacks = [sinon.fake(), sinon.fake(), sinon.fake()]
     const promise = new Promise((resolve, reject) => {      
       resolve()
@@ -190,7 +190,7 @@ describe('Promise', () => {
     })
   })
 
-  it('2.2.6 then可以在同一个promise里被多次调用reject', (done) => {
+  it('2.2.6 then可以在同一个promise里被多次调用==>(reject)', (done) => {
     const callbacks = [sinon.fake(), sinon.fake(), sinon.fake()]
     const promise = new Promise((resolve, reject) => {      
       reject()
