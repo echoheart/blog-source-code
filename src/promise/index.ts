@@ -1,6 +1,9 @@
 class _Promise {
 
   public state = 'pending';
+  /**
+   * 每次调用then存储回调函数的数组
+   */
   private callbacks = [];
 
   private resolveOrReject(state, data, i) {
@@ -22,6 +25,10 @@ class _Promise {
     if (typeof fn !== 'function') {
       throw new Error('只接受函数');
     }
+    /**
+     * 要提前绑定this
+     * 因为resolve和reject是由使用者调用, this不能确定
+     */
     fn(this.resolve.bind(this), this.reject.bind(this));
   }
   public resolve(result) {
@@ -30,7 +37,14 @@ class _Promise {
   public reject(reason) {
     this.resolveOrReject('rejected', reason, 1);
   }
-  
+  /**
+   * 首先返回了一个新的Promise实例, 为了实现链式调用
+   * 将handle push进数组是为了同一个promise可以多次调用then
+   * 将新的Promise实例放进handle是为了在上一次promise调用relove或者reject时
+   * 可以根据上一次promise的relove或者reject的返回值做不同的处理
+   * @param succeed relove的回调
+   * @param fail reject的回调
+   */
   public then(succeed?, fail?) {
     const handle = []; 
     if (typeof succeed === 'function') {
@@ -85,6 +99,12 @@ class _Promise {
     }
   }
 
+  /**
+   * 
+   * 为了实现then的链式调用
+   * 将返回值x进行各种情况的处理, 这部分主要是参看A+规范
+   * @param x then的第一个回调函数或者第二个回调函数的返回值
+   */
   public resolveWith(x) {
     if (this === x) {
       this.resolveWithSelf()
@@ -100,6 +120,12 @@ class _Promise {
 
 export default _Promise;
 
+/**
+ * 实现兼容node和浏览器两个环境的nextTick 参考Vue的nextTick实现
+ * 主要借助MutationObserver
+ * 不明白的可以看看MDN介绍
+ * @param fn 回调函数
+ */
 function nextTick(fn) {
   if (process !== undefined && typeof process.nextTick === "function") {
     return process.nextTick(fn);
