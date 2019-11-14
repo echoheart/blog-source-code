@@ -209,12 +209,107 @@ describe('Promise', () => {
     })
   })
 
-  // it('2.2.7 then返回一个Promise', () => {
-  //   const promise = new Promise((resolve, reject) => {      
-  //     resolve()
-  //   })
-  //   const promise2: any = promise.then();
-  //   assert(promise2 instanceof Promise);
-  // })
+  it('2.2.7 then返回一个Promise', () => {
+    const promise = new Promise((resolve, reject) => {      
+      resolve()
+    })
+    const promise2: any = promise.then();
+    assert(promise2 instanceof Promise);
+  })
+
+  it('2.2.7.1 如果then(succeed, fail)中的succeed返回一个值x, 运行 [[Resolve]](promise2, x)', (done) => {
+    const promise1 = new Promise((resolve, reject) => {      
+      resolve()
+    })
+    promise1.then(() => {
+      return '成功';
+    }).then((result) => {
+      assert(result === '成功')
+      done()
+    })
+  })
+
+  it('2.2.7.1.2 第一个函数的返回值是一个Promoise实例', (done) => {
+    const promise1 = new Promise((resolve, reject) => {      
+      resolve()
+    })
+    const fn = sinon.fake();
+    promise1.then(() => {
+      const x = new Promise((resolve, reject) => {
+        resolve();
+      })
+      return x;
+    }).then(fn)
+    setTimeout(() => {
+      assert.isTrue(fn.called);
+      done()
+    }, 0)
+  })
+
+  it('2.2.7.1.2 第一个函数的返回值是一个Promoise实例并且失败了', (done) => {
+    const promise1 = new Promise((resolve, reject) => {      
+      resolve()
+    })
+    const fn = sinon.fake();
+    promise1.then(() => {
+      const x = new Promise((resolve, reject) => {
+        reject();
+      });
+      return x;
+    }).then(null,fn)
+    setTimeout(() => {
+      assert.isTrue(fn.called);
+      done()
+    }, 0)
+  })
+
+  it('2.2.7.1.2 第二个函数(then的第二个参数)的返回值是一个Promoise实例', (done) => {
+    const promise1 = new Promise((resolve, reject) => {      
+      reject()
+    })
+    const fn = sinon.fake();
+    promise1.then(null, () => {
+      const x = new Promise((resolve, reject) => {
+        resolve();
+      });
+      return x;
+    }).then(fn)
+    setTimeout(() => {
+      assert.isTrue(fn.called);
+      done()
+    }, 0)
+  })
+  it('2.2.7.1.2 第二个函数(then的第二个参数)的返回值是一个Promoise实例并且失败了', (done) => {
+    const promise1 = new Promise((resolve, reject) => {      
+      reject()
+    })
+    const fn = sinon.fake();
+    promise1.then(null, () => {
+      const x = new Promise((resolve, reject) => {
+        reject();
+      });
+      return x;
+    }).then(null, fn)
+    setTimeout(() => {
+      assert.isTrue(fn.called);
+      done()
+    }, 0)
+  })
+
+  it('2.2.7.2 如果then的第一个或者第二个函数抛出一个异常e,下一个promise必须被拒绝（rejected）并把e当作原因', (done) => {
+    const promise1 = new Promise((resolve, reject) => {      
+      resolve()
+    })
+    const fn = sinon.fake();
+    const error = new Error();
+    promise1.then(() => {
+      throw error;
+    }).then(null, fn)
+    setTimeout(() => {
+      assert.isTrue(fn.calledWith(error));
+      done()
+    }, 0)
+  })
+
 
 })
