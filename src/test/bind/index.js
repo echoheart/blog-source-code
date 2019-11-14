@@ -5,8 +5,8 @@
  test4("this, p1 绑定成功，后传 p2 调用成功");
 
  test5("new 的时候绑定了 p1, p2");
-//  test6("new 的时候绑定了 p1, p2，并且 fn 有 prototype.sayHi");
-//  test7("不用 new 但是用类似的对象");
+ test6("new 的时候绑定了 p1, p2，并且 fn 有 prototype.sayHi");
+ test7("不用 new 但是用类似的对象");
  
  function test1(message) {
    

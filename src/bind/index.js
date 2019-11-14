@@ -51,7 +51,7 @@ function ES6bindWithNew (asThis, ...args) {
     throw new Error('必须是函数');
   }
   /**
-   * 最终bind返回的函数式result
+   * 最终bind返回的函数是result
    * result被new关键字调用
    * 所以要判断result函数return的this是不是result的实例
    * 如果是那么说明result是被new操作符调用了, fn.call的第一个参数就应该是result生成的实例也就是this
@@ -74,6 +74,10 @@ function ES6bindWithNew (asThis, ...args) {
       ...innerArgs
       )
   }
+  /**
+   * 为了使result生成实例的原型是fn的原型
+   */
+  result.prototype = fn.prototype;
   return result
 }
 
