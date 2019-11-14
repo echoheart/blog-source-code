@@ -92,14 +92,18 @@ function ES5bindWithNew () {
   if (typeof(fn) !== 'function') {
     throw new Error('必须是函数');
   }
-  return function () {
+  function result () {
     var innerArgs = slice.call(arguments);
-    return fn.apply(asThis, args.concat(innerArgs));
+    return fn.apply(
+      this instanceof result ? this : asThis, 
+      args.concat(innerArgs));
   }
+  result.prototype = fn.prototype;
+  return result
 }
 
 
-let  bind = ES6bindWithNew;
+let  bind = ES5bindWithNew;
 
 if (!Function.prototype.bind) {
   Function.prototype.bind = bind = ES5bindWithNew;
