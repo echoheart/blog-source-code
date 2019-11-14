@@ -4,8 +4,8 @@
   "description": "博客源码",
   "main": "index.js",
   "scripts": {
-    "testT": "mocha src/test/**/test.ts",
-    "testJ": "mocha src/test/**/test.js"
+    "testT": "mocha src/test/**/index.ts",
+    "testJ": "mocha src/test/**/index.js"
   },
   "repository": {
     "type": "git",
