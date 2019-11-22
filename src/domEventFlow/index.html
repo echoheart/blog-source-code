@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>dom事件流</title>
+  <style>
+    body {
+      margin: 300px;
+    }
+    #wrapper {
+      width: 300px;
+      height: 300px;
+      background: aqua;
+    }
+    #parent {
+      width: 200px;
+      height: 200px;
+      background: bisque;
+    }
+    #child {
+      width: 100px;
+      height: 100px;
+      background: blueviolet;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+      <div id="parent">
+        <div id="child">child</div>
+        parent
+      </div>
+    wrapper
+  </div>
+
+  <script>
+  const wrapper = document.querySelector('#wrapper');
+	const parent = document.querySelector('#parent');
+	const child = document.querySelector('#child');
+
+	wrapper.addEventListener('click', (e) => {
+
+		alert('wrapper-冒泡')
+	}, false);
+	wrapper.addEventListener('click', function(e) {
+		console.log('e.target-wrapper-捕获', e.target);
+		console.log('e.currentTarget-wrapper-捕获', e.currentTarget);
+		console.log('this', this);
+		alert('wrapper-捕获')
+	}, true);
+
+
+	parent.addEventListener('click', (e) => {
+		alert('parent-冒泡')
+	}, false);
+	parent.addEventListener('click', function(e) {
+		e.stopPropagation();
+		console.log('e.target-parent-捕获', e.target);
+		console.log('e.currentTarget-parent-捕获', e.currentTarget);
+		console.log('this', this);
+		alert('parent-捕获')
+	}, true);
+
+	child.addEventListener('click', (e) => {
+		alert('child-冒泡')
+	}, false);
+	child.addEventListener('click', (e) => {
+		alert('child-捕获')
+	}, true);
+
+	// child.addEventListener('click', () => {
+	// 	alert('child-捕获')
+	// }, true);
+	// child.addEventListener('click', () => {
+	// 	alert('child-冒泡')
+	// }, false);
+
+  </script>
+</body>
+</html>
