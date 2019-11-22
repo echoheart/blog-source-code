@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="description" content="300ms延迟演示，手机上打开连接，注释掉viewport" />
+  <meta charset="utf-8">
+  <title>300ms延迟</title>
+  <!--
+  <meta name="viewport" content="width=device-width">
+  -->
+</head>
+<body>
+<div id="delay">click有延迟 </div>
+<div id="no-delay">touchstart无延迟</div>
+<div> <a id="link1" href="#1">链接1</a> <a id="link2" href="#2">链接1</a></div>
+<div id="log"></div>
+
+<style>
+  body {
+    font-size: 60px;
+  }
+</style>
+
+<script>
+
+  //添加fast-click
+
+  const fastClick = (function () {
+    function attach(root) {
+      let targetEle = null;
+      root.addEventListener('touchstart', (e) => {
+        targetEle = e.target;
+      });
+      root.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        let touch = e.changedTouches[0];
+        let clickEvent = document.createEvent('MouseEvents');
+        clickEvent.initMouseEvent('click', true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null)
+        clickEvent.forwardedTouchEvent = true
+        targetElement.dispatchEvent(clickEvent)
+      })
+    }
+    return { attach }
+  })();
+  fastClick.attach(document.body);
+
+
+  const $ = s => document.querySelector(s);
+  const log = str => $('#log').innerText = str;
+
+  let t1, t2;
+
+  $('#delay').ontouchstart = e => {
+    t1 = Date.now()
+  };
+
+  $('#delay').onclick = e => {
+    log(Date.now() - t1)
+  };
+
+  $('#no-delay').ontouchstart = e => {
+    e.preventDefault();
+    log('touchstart无延迟')
+  };
+
+  $('#link1').ontouchstart = e => {
+    t2 = Date.now()
+  };
+
+  $('#link2').ontouchstart = e => {
+    t2 = Date.now()
+  };
+
+  window.onhashchange = () => {
+    log(`link: ${Date.now() - t2}ms`)
+  }
+</script>
+</body>
+</html>
