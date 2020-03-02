@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>animation</title>
+  <style>
+    @keyframes toleft {
+      0% {
+        transform: translate(-100%);
+        opacity: 0;
+      }
+      50% {
+        transform: translate(-200%);
+      }
+      100% {
+        transform: translate(100%);
+        height: 200px;
+        width: 200px;
+        opacity: 1;
+      }
+    }
+    .item {
+      background: green;
+    }
+    .box {
+      margin: 100px 300px;
+    }
+    .one {
+      width: 100px;
+      height: 100px;
+      border: 1px solid gold;
+      animation: toleft 2s linear none;
+    }
+    .oneforwards {
+      width: 100px;
+      height: 100px;
+      border: 1px solid gold;
+      animation: toleft 2s linear forwards;
+    }
+    .onebackwards {
+      width: 100px;
+      height: 100px;
+      border: 1px solid gold;
+      animation: toleft 2s linear backwards;
+    }
+    .oneboth {
+      width: 100px;
+      height: 100px;
+      border: 1px solid gold;
+      animation: toleft 2s linear both;
+    }
+
+    @keyframes boarddown {
+      0% {
+        transform: translateY(0);
+      }
+
+      100% {
+        transform: translateY(100%);
+      }
+    }
+    @keyframes boardup {
+      0% {
+        transform: translateY(100%);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .itemboard {
+      background: rebeccapurple;
+      width: 200px;
+      height: 200px;
+      /* display: none; */
+    }
+
+    .boarddown {
+      display: block;
+      animation: boarddown .3s linear alternate both;
+    }
+    .boardup {
+      display: block;
+      animation: boardup .3s linear alternate both;
+    }
+  
+  
+  </style>
+</head>
+<body>
+ 
+  <div class="box">
+    <div class="itemboard"></div>
+  </div>
+  <button>toggle</button>
+  <div class="box">
+    <div class="item one"></div>
+  </div>
+  <div class="box">
+    <div class="item oneforwards"></div>
+  </div>
+  <div class="box">
+      <div class="item onebackwards"></div>
+  </div>
+  <div class="box">
+      <div class="item oneboth"></div>
+  </div>
+
+  <script>
+    const board = document.querySelector('.itemboard');
+    const button = document.querySelector('button');
+    let visible = false;
+    button.onclick= () => {
+      if (visible) {
+        board.className = 'itemboard boardup';
+        visible= false;
+      } else {
+        board.className = 'itemboard boarddown';
+        visible= true;
+      }
+    }
+  </script>
+
+
+
+</body>
+</html>
